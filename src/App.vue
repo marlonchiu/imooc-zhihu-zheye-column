@@ -2,7 +2,7 @@
   <div class="container">
     <global-header :user="currentUser"></global-header>
     <column-list :list="list"></column-list>
-    <form action="">
+    <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
         <validate-input
@@ -21,6 +21,9 @@
           v-model="passwordVal"
         ></validate-input>
       </div>
+      <template v-slot:submit>
+        <span class="btn btn-danger">Submit</span>
+      </template>
       <!-- <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">邮箱地址</label>
         <input type="text" class="form-control" id="exampleInputEmail1" v-model="emailRef.val" @blur="validateEmail" />
@@ -30,7 +33,7 @@
         <label for="exampleInputPassword1" class="form-label">密码</label>
         <input type="password" class="form-control" id="exampleInputPassword1" />
       </div> -->
-    </form>
+    </validate-form>
   </div>
 </template>
 
@@ -40,7 +43,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import ValidateInput, { RulesProps } from './base/ValidateInput.vue'
-const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+import ValidateForm from './base/ValidateForm.vue'
+// const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 const testData: ColumnProps[] = [
   {
@@ -79,7 +83,8 @@ export default defineComponent({
   components: {
     // ColumnList,
     GlobalHeader,
-    ValidateInput
+    ValidateInput,
+    ValidateForm
   },
   setup () {
     const emailVal = ref('')
@@ -92,29 +97,34 @@ export default defineComponent({
       { type: 'required', message: '密码不能为空' }
     ]
 
-    const emailRef = reactive({
-      val: '',
-      error: false,
-      message: ''
-    })
-    const validateEmail = () => {
-      if (emailRef.val.trim() === '') {
-        emailRef.error = true
-        emailRef.message = 'can not be empty'
-      } else if (!emailReg.test(emailRef.val)) {
-        emailRef.error = true
-        emailRef.message = 'should be valid email'
-      }
+    const onFormSubmit = (result: boolean) => {
+      console.log('124 ' + result)
     }
+
+    // const emailRef = reactive({
+    //   val: '',
+    //   error: false,
+    //   message: ''
+    // })
+    // const validateEmail = () => {
+    //   if (emailRef.val.trim() === '') {
+    //     emailRef.error = true
+    //     emailRef.message = 'can not be empty'
+    //   } else if (!emailReg.test(emailRef.val)) {
+    //     emailRef.error = true
+    //     emailRef.message = 'should be valid email'
+    //   }
+    // }
     return {
       list: testData,
       currentUser,
-      emailRef,
-      validateEmail,
+      // emailRef,
+      // validateEmail,
       emailRules,
       emailVal,
       passwordRules,
-      passwordVal
+      passwordVal,
+      onFormSubmit
     }
   }
 })
