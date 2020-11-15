@@ -20,18 +20,22 @@ export default defineComponent({
   name: 'ValidateForm',
   emits: ['form-submit'],
   setup (props, context) {
+    let funcArr: ValidateFunc[] = []
     const submitForm = (): void => {
-      context.emit('form-submit', true)
+      // 循环执行数组 得到最后的验证结果
+      const result = funcArr.map(func => func()).every(result => result)
+      context.emit('form-submit', result)
     }
-
-    const callback = (test: string | undefined) => {
-      console.log(test)
+    // 将监听得到的验证函数都存到一个数组中
+    const callback = (func: ValidateFunc) => {
+      funcArr.push(func)
     }
     // 添加监听
     emitter.on('form-item-created', callback)
     // 卸载监听
     onUnmounted(() => {
       emitter.off('form-item-created', callback)
+      funcArr = []
     })
 
     return {
