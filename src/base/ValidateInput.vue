@@ -31,7 +31,6 @@ export default defineComponent({
   // 禁止 attribute 继承
   inheritAttrs: false,
   setup (props, context) {
-    // console.log(context.attrs)
     const inputRef = reactive({
       val: props.modelValue || '',
       error: false,
