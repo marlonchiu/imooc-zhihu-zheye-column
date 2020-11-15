@@ -1,29 +1,61 @@
 <template>
-  <form>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" />
-    </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  <div class="validate-input-container pb-3">
+    <input
+      type="text"
+      class="form-control"
+      :class="{ 'is-invalid': inputRef.error }"
+      v-model="inputRef.val"
+      @blur="validateInput"
+    />
+    <span v-if="inputRef.error" class="invalid-feedback">{{ inputRef.message }}</span>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, PropType } from 'vue'
+const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+
+interface RuleProps {
+  type: 'required' | 'email';
+  message: string;
+}
+export type RulesProps = RuleProps[]
 
 export default defineComponent({
   name: 'ValidateInput',
-  setup () {
-    return {}
+  props: {
+    rules: Array as PropType<RulesProps>
+  },
+  setup (props) {
+    const inputRef = reactive({
+      val: '',
+      error: false,
+      message: ''
+    })
+    const validateInput = () => {
+      if (props.rules) {
+        const allPassed = props.rules.every(rule => {
+          let passed = true
+          inputRef.message = rule.message
+          switch (rule.type) {
+            case 'required':
+              passed = inputRef.val.trim() !== ''
+              break
+            case 'email':
+              passed = emailReg.test(inputRef.val)
+              break
+            default:
+              break
+          }
+          return passed
+        })
+        inputRef.error = !allPassed
+      }
+    }
+    return {
+      inputRef,
+      validateInput
+    }
   }
 })
 </script>
