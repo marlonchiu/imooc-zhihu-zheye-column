@@ -6,6 +6,7 @@
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
         <validate-input
+          ref="inputRef"
           type="text"
           placeholder="请输入邮箱地址"
           :rules="emailRules"
@@ -87,6 +88,7 @@ export default defineComponent({
     ValidateForm
   },
   setup () {
+    const inputRef = ref<any>()
     const emailVal = ref('')
     const emailRules: RulesProps = [
       { type: 'required', message: '电子邮箱地址不能为空' },
@@ -98,7 +100,8 @@ export default defineComponent({
     ]
 
     const onFormSubmit = (result: boolean) => {
-      console.log('124 ' + result)
+      console.log('123 ' + inputRef.value)
+      // console.log('124 ' + result)
     }
 
     // const emailRef = reactive({
@@ -124,7 +127,8 @@ export default defineComponent({
       emailVal,
       passwordRules,
       passwordVal,
-      onFormSubmit
+      onFormSubmit,
+      inputRef
     }
   }
 })

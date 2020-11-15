@@ -16,7 +16,7 @@ export default defineComponent({
   name: 'ValidateForm',
   emits: ['form-submit'],
   setup (props, context) {
-    const submitForm = () => {
+    const submitForm = (): void => {
       context.emit('form-submit', true)
     }
 
