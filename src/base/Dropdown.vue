@@ -5,14 +5,12 @@
     </a>
     <ul class="dropdown-menu" :style="{display: 'block'}" v-if="isOpen">
       <slot></slot>
-      <!-- <li class="dropdown-item"><a href="#">新建文章</a></li>
-      <li class="dropdown-item"><a href="#">编辑资料</a></li> -->
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import useClickOutside from '../hooks/useClickOutside'
 
 export default defineComponent({
@@ -38,19 +36,7 @@ export default defineComponent({
         isOpen.value = false
       }
     })
-    // const handler = (e: MouseEvent) => {
-    //   if (dropdownRef.value) {
-    //     if (!dropdownRef.value.contains(e.target as HTMLElement) && isOpen.value) {
-    //       isOpen.value = false
-    //     }
-    //   }
-    // }
-    // onMounted(() => {
-    //   document.addEventListener('click', handler)
-    // })
-    // onUnmounted(() => {
-    //   document.addEventListener('click', handler)
-    // })
+
     return {
       isOpen,
       toggleOpen,
