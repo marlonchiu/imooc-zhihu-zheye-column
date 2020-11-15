@@ -13,7 +13,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType } from 'vue'
+import { defineComponent, reactive, PropType, onMounted } from 'vue'
+import { emitter } from './ValidateForm.vue'
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 interface RuleProps {
@@ -63,6 +64,10 @@ export default defineComponent({
       }
       return true
     }
+    // 将事件发射出去，其实就是把验证函数发射出去
+    onMounted(() => {
+      emitter.emit('form-item-created', inputRef.val)
+    })
     return {
       inputRef,
       validateInput,
