@@ -31,8 +31,10 @@ export default defineComponent({
     const store = useStore<GlobalDataProps>()
 
     const currentId = Number(route.params.id)
-    const column = computed(() => store.state.columns.find(col => col.id === currentId))
-    const postList = computed(() => store.state.posts.filter(post => post.columnId === currentId))
+    // const column = computed(() => store.state.columns.find(col => col.id === currentId))
+    // const postList = computed(() => store.state.posts.filter(post => post.columnId === currentId))
+    const column = computed(() => store.getters.getColumnById(currentId))
+    const postList = computed(() => store.getters.getPostsByCid(currentId))
 
     return {
       column,
