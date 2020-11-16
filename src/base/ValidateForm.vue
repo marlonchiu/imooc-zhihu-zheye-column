@@ -11,9 +11,10 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted } from 'vue'
-import mitt from 'mitt'
+import mitt, { Emitter } from 'mitt'
 // 实例化 mitt
-export const emitter = mitt()
+// export const emitter = mitt()
+export const emitter: Emitter = mitt()
 type ValidateFunc = () => boolean
 
 export default defineComponent({
@@ -27,8 +28,9 @@ export default defineComponent({
       context.emit('form-submit', result)
     }
     // 将监听得到的验证函数都存到一个数组中
-    const callback = (func: ValidateFunc) => {
-      funcArr.push(func)
+    // TODO  错误临时处理 https://github.com/developit/mitt/issues/112
+    const callback = (func?: ValidateFunc) => {
+      if (func) funcArr.push(func)
     }
     // 添加监听
     emitter.on('form-item-created', callback)
