@@ -4,6 +4,7 @@ import Login from './views/Login.vue'
 import Signup from './views/Signup.vue'
 import ColumnDetail from './views/ColumnDetail.vue'
 import CreatePost from './views/CreatePost.vue'
+import store from './store'
 
 const routerHistory = createWebHistory()
 const router = createRouter({
@@ -37,4 +38,12 @@ const router = createRouter({
   ]
 })
 
+// 路由前置守卫
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && !store.state.user.isLogin) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+})
 export default router
