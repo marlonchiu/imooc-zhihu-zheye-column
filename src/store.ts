@@ -15,6 +15,9 @@ const store = createStore<GlobalDataProps>({
   mutations: {
     login (state) {
       state.user = { ...state.user, isLogin: true, name: 'marlon' }
+    },
+    createPost (state, newPost) {
+      state.posts.push(newPost)
     }
   },
   getters: {
