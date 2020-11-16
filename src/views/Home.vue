@@ -21,7 +21,6 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '../store'
 import ColumnList from '../components/ColumnList.vue'
-// import { testColumns } from '../testData'
 
 export default defineComponent({
   name: 'Home',

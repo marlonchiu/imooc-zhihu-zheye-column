@@ -18,7 +18,6 @@ import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '../store'
-// import { testColumns, testPosts } from '../testData'
 import PostList from '../components/PostList.vue'
 
 export default defineComponent({
@@ -31,8 +30,6 @@ export default defineComponent({
     const store = useStore<GlobalDataProps>()
 
     const currentId = Number(route.params.id)
-    // const column = computed(() => store.state.columns.find(col => col.id === currentId))
-    // const postList = computed(() => store.state.posts.filter(post => post.columnId === currentId))
     const column = computed(() => store.getters.getColumnById(currentId))
     const postList = computed(() => store.getters.getPostsByCid(currentId))
 
