@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent } from 'vue'
 import ColumnList from '../components/ColumnList.vue'
-import { testColumns, ColumnProps } from '../testData'
+import { testColumns } from '../testData'
 
 export default defineComponent({
   name: 'Home',
