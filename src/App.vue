@@ -23,7 +23,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 
 const currentUser: UserProps = {
-  isLogin: true,
+  isLogin: false,
   name: 'viking',
   id: 'v_123'
 }
