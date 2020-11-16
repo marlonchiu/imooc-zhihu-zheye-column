@@ -20,13 +20,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
-
-const currentUser: UserProps = {
-  isLogin: false,
-  name: 'viking',
-  id: 'v_123'
-}
+import GlobalHeader from './components/GlobalHeader.vue'
+import { currentUser } from './testData'
 
 export default defineComponent({
   name: 'App',
