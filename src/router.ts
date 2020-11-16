@@ -18,12 +18,14 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: { redirectAlreadyLogin: true }
     },
     {
       path: '/signup',
       name: 'signup',
-      component: Signup
+      component: Signup,
+      meta: { redirectAlreadyLogin: true }
     },
     {
       path: '/column/:id',
@@ -33,15 +35,19 @@ const router = createRouter({
     {
       path: '/create',
       name: 'create',
-      component: CreatePost
+      component: CreatePost,
+      meta: { requiredLogin: true }
     }
   ]
 })
 
 // 路由前置守卫
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !store.state.user.isLogin) {
+  // 是否需要 Login 且 没有登录
+  if (to.meta.requiredLogin && !store.state.user.isLogin) {
     next({ name: 'login' })
+  } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin) {
+    next({ name: 'home' })
   } else {
     next()
   }

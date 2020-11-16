@@ -79,7 +79,7 @@ export const testPosts: PostProps[] = [
 ]
 
 export const currentUser: UserProps = {
-  isLogin: false,
+  isLogin: true,
   name: 'viking',
   id: 'v_123',
   columnId: 1
