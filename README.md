@@ -29,3 +29,7 @@ npm run serve
 - 流程图和原型图
 - 购买后直接可以接入使用的真实后端 API
 - **如果您想学习本课程，请支持正版，谢谢！ [https://coding.imooc.com/class/449.html](https://coding.imooc.com/class/449.html)**
+
+## 演示信息
+
+账号密码: 111@test.com / 111111
