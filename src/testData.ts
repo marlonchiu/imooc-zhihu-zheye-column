@@ -31,8 +31,9 @@ export interface PostProps {
 }
 
 export interface RuleProps {
-  type: 'required' | 'email';
+  type: 'required' | 'email' | 'custom';
   message: string;
+  validator?: () => boolean;
 }
 
 export type MessageType = 'success' | 'error' | 'default'
