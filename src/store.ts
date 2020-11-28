@@ -8,7 +8,7 @@ const storageHandler = new StorageHandler()
 
 export interface GlobalErrorProps {
   status: boolean;
-  message?: boolean;
+  message?: string;
 }
 
 export interface GlobalDataProps {
