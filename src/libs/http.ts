@@ -14,8 +14,9 @@ axios.interceptors.request.use(config => {
 
 // http://api.imooc.com/api/columns?currentPage=1&pageSize=5 icode={codeName}
 
-axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
-  console.log(res)
-})
+// 测试发送
+// axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
+//   console.log(res)
+// })
 
 export default axios
