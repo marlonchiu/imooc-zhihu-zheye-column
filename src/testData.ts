@@ -1,8 +1,11 @@
 export interface UserProps {
   isLogin: boolean;
-  name?: string;
-  id?: string;
-  columnId?: string;
+  nickName?: string;
+  _id?: string;
+  column?: string;
+  email?: string;
+  description?: string;
+  avatar?: ImageProps;
 }
 
 export interface ImageProps {
@@ -85,8 +88,8 @@ export const testPosts: PostProps[] = [
 ]
 
 export const currentUser: UserProps = {
-  isLogin: false,
-  name: 'viking',
-  id: 'v_123',
-  columnId: '1'
+  isLogin: false
+  // nickName: 'viking',
+  // _id: 'v_123',
+  // column: '1'
 }

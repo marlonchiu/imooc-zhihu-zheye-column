@@ -50,7 +50,13 @@ const store = createStore<GlobalDataProps>({
       state.loading = status
     },
     login (state, rawData) {
-      state.token = rawData.data.token
+      const { token } = rawData.data
+      state.token = token
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+    },
+    fetchCurrentUser (state, rawData) {
+      console.log(rawData.data)
+      state.user = { isLogin: true, ...rawData.data }
     }
   },
   actions: {
@@ -78,6 +84,15 @@ const store = createStore<GlobalDataProps>({
     },
     login ({ commit }, payload) {
       return postAndCommit('/api/user/login', 'login', commit, payload)
+    },
+    fetchCurrentUser ({ commit }) {
+      return getAndCommit('/api/user/current', 'fetchCurrentUser', commit)
+    },
+    // 登录并获取用户信息
+    loginAndFetch ({ dispatch }, loginData) {
+      return dispatch('login', loginData).then(() => {
+        return dispatch('fetchCurrentUser')
+      })
     }
   },
   getters: {
