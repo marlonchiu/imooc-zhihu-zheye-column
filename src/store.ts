@@ -10,12 +10,8 @@ export interface GlobalDataProps {
 }
 
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
-  // commit('setLoading', true)
   const { data } = await axios.get(url)
-  // 为了验证loading 延时3秒
-  // await new Promise(resolve => setTimeout(resolve, 3000))
   commit(mutationName, data)
-  // commit('setLoading', false)
 }
 const store = createStore<GlobalDataProps>({
   state: {
