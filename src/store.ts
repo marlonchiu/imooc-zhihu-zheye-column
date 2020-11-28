@@ -3,17 +3,23 @@ import { currentUser, ColumnProps, PostProps, UserProps } from './testData'
 import axios from './libs/http'
 
 export interface GlobalDataProps {
+  loading: boolean;
   columns: ColumnProps[];
   posts: PostProps[];
   user: UserProps;
 }
 
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
+  // commit('setLoading', true)
   const { data } = await axios.get(url)
+  // 为了验证loading 延时3秒
+  // await new Promise(resolve => setTimeout(resolve, 3000))
   commit(mutationName, data)
+  // commit('setLoading', false)
 }
 const store = createStore<GlobalDataProps>({
   state: {
+    loading: false,
     columns: [],
     posts: [],
     user: currentUser
@@ -36,6 +42,9 @@ const store = createStore<GlobalDataProps>({
     fetchPosts (state, rawData) {
       console.log(rawData.data.list)
       state.posts = rawData.data.list
+    },
+    setLoading (state, status) {
+      state.loading = status
     }
   },
   actions: {
@@ -47,13 +56,19 @@ const store = createStore<GlobalDataProps>({
     fetchColumns ({ commit }) {
       getAndCommit('/api/columns', 'fetchColumns', commit)
     },
-    async fetchColumn ({ commit }, cid) {
-      const { data } = await axios.get(`/api/columns/${cid}`)
-      commit('fetchColumn', data)
+    // async fetchColumn ({ commit }, cid) {
+    //   const { data } = await axios.get(`/api/columns/${cid}`)
+    //   commit('fetchColumn', data)
+    // },
+    fetchColumn ({ commit }, cid) {
+      getAndCommit(`/api/columns/${cid}`, 'fetchColumn', commit)
     },
-    async fetchPosts ({ commit }, cid) {
-      const { data } = await axios.get(`/api/columns/${cid}/posts`)
-      commit('fetchPosts', data)
+    // async fetchPosts ({ commit }, cid) {
+    //   const { data } = await axios.get(`/api/columns/${cid}/posts`)
+    //   commit('fetchPosts', data)
+    // }
+    fetchPosts ({ commit }, cid) {
+      getAndCommit(`/api/columns/${cid}/posts`, 'fetchPosts', commit)
     }
   },
   getters: {
