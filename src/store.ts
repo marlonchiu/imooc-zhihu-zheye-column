@@ -6,8 +6,14 @@ import { StorageType, StorageHandler } from './libs/storage'
 const storageType = StorageType.Local
 const storageHandler = new StorageHandler()
 
+export interface GlobalErrorProps {
+  status: boolean;
+  message?: boolean;
+}
+
 export interface GlobalDataProps {
   token: string;
+  error: GlobalErrorProps;
   loading: boolean;
   columns: ColumnProps[];
   posts: PostProps[];
@@ -25,6 +31,7 @@ const postAndCommit = async (url: string, mutationName: string, commit: Commit, 
 }
 const store = createStore<GlobalDataProps>({
   state: {
+    error: { status: false },
     token: storageHandler.getItem(storageType, 'token') || '',
     loading: false,
     columns: [],
@@ -52,6 +59,9 @@ const store = createStore<GlobalDataProps>({
     },
     setLoading (state, status) {
       state.loading = status
+    },
+    setError (state, e: GlobalErrorProps) {
+      state.error = e
     },
     login (state, rawData) {
       const { token } = rawData.data

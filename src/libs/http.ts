@@ -13,8 +13,16 @@ axios.interceptors.request.use(config => {
 
 // interceptors 响应的拦截器
 axios.interceptors.response.use(resp => {
-  store.commit('setLoading', false)
+  setTimeout(() => {
+    store.commit('setLoading', false)
+  }, 1000)
   return resp
+}, e => {
+  console.log(e.response)
+  const { error } = e.response.data
+  store.commit('setError', { status: true, message: error })
+  store.commit('setLoading', false)
+  return Promise.reject(error)
 })
 
 // http://api.imooc.com/api/columns?currentPage=1&pageSize=5 icode={codeName}
