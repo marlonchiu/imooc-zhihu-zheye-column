@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <global-header :user="currentUser"></global-header>
-    <h1>{{ error.message }}</h1>
+    <message type="error" :message="error.message"></message>
     <loader v-if="isLoading" text="拼命加载中"  background="rgba(0, 0, 0, 0.8)"></loader>
     <router-view></router-view>
     <footer class="text-center py-4 text-secondary bg-light mt-6">
@@ -27,6 +27,7 @@ import { GlobalDataProps } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader from './components/GlobalHeader.vue'
 import Loader from './base/Loader.vue'
+import Message from './base/Message.vue'
 import axios from './libs/http'
 // import { currentUser } from './testData'
 
@@ -34,7 +35,8 @@ export default defineComponent({
   name: 'App',
   components: {
     GlobalHeader,
-    Loader
+    Loader,
+    Message
   },
   setup () {
     // const router = useRouter()

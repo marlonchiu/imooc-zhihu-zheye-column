@@ -34,6 +34,9 @@ export interface RuleProps {
   type: 'required' | 'email';
   message: string;
 }
+
+export type MessageType = 'success' | 'error' | 'default'
+
 export const testColumns: ColumnProps[] = [
   {
     _id: '1',
