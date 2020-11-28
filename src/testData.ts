@@ -2,7 +2,7 @@ export interface UserProps {
   isLogin: boolean;
   name?: string;
   id?: string;
-  columnId?: number;
+  columnId?: string;
 }
 
 export interface ImageProps {
@@ -18,12 +18,13 @@ export interface ColumnProps {
 }
 
 export interface PostProps {
-  id: number;
+  _id: string;
   title: string;
-  content: string;
-  image?: string;
+  excerpt?: string;
+  content?: string;
+  image?: ImageProps;
+  column: string;
   createdAt: string;
-  columnId: number;
 }
 
 export interface RuleProps {
@@ -60,27 +61,26 @@ export const testColumns: ColumnProps[] = [
 
 export const testPosts: PostProps[] = [
   {
-    id: 1,
+    _id: '1',
     title: '这是我的第一篇文章',
     content: '这是的test1专栏，有一段非常有意思的简介，可以更新一下欧',
-    image: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5ee22dd58b3c4520912b9470.jpg?x-oss-process=image/resize,m_pad,h_100,w_100',
+    // image: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5ee22dd58b3c4520912b9470.jpg?x-oss-process=image/resize,m_pad,h_100,w_100',
     createdAt: '2020-06-11 10:34:22',
-    columnId: 1
+    column: '1'
   },
   {
-    id: 2,
+    _id: '2',
     title: '这是我的第一篇文章',
     content: '这是的test1专栏，有一段非常有意思的简介，可以更新一下欧',
-    image: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5ee22dd58b3c4520912b9470.jpg?x-oss-process=image/resize,m_pad,h_100,w_100',
     createdAt: '2020-06-11 10:34:22',
-    columnId: 1
+    column: '1'
   },
   {
-    id: 1,
+    _id: '3',
     title: '这是我的第一篇文章',
     content: '这是的test1专栏，有一段非常有意思的简介，可以更新一下欧',
     createdAt: '2020-06-11 10:34:22',
-    columnId: 2
+    column: '1'
   }
 ]
 
@@ -88,5 +88,5 @@ export const currentUser: UserProps = {
   isLogin: true,
   name: 'viking',
   id: 'v_123',
-  columnId: 1
+  columnId: '1'
 }

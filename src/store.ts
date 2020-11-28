@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { testColumns, testPosts, currentUser, ColumnProps, PostProps, UserProps } from './testData'
+import { currentUser, ColumnProps, PostProps, UserProps } from './testData'
 import axios from './libs/http'
 
 export interface GlobalDataProps {
@@ -9,8 +9,8 @@ export interface GlobalDataProps {
 }
 const store = createStore<GlobalDataProps>({
   state: {
-    columns: testColumns,
-    posts: testPosts,
+    columns: [],
+    posts: [],
     user: currentUser
   },
   mutations: {
@@ -23,6 +23,14 @@ const store = createStore<GlobalDataProps>({
     fetchColumns (state, rawData) {
       console.log(rawData.data.list)
       state.columns = rawData.data.list
+    },
+    fetchColumn (state, rawData) {
+      console.log(rawData.data)
+      state.columns = [rawData.data]
+    },
+    fetchPosts (state, rawData) {
+      console.log(rawData.data.list)
+      state.posts = rawData.data.list
     }
   },
   actions: {
@@ -30,14 +38,24 @@ const store = createStore<GlobalDataProps>({
       axios.get('/api/columns').then(resp => {
         context.commit('fetchColumns', resp.data)
       })
+    },
+    fetchColumn ({ commit }, cid) {
+      axios.get(`/api/columns/${cid}`).then(resp => {
+        commit('fetchColumn', resp.data)
+      })
+    },
+    fetchPosts ({ commit }, cid) {
+      axios.get(`/api/columns/${cid}/posts`).then(resp => {
+        commit('fetchPosts', resp.data)
+      })
     }
   },
   getters: {
     getColumnById: (state) => (id: string) => {
       return state.columns.find(c => c._id === id)
     },
-    getPostsByCid: (state) => (cid: number) => {
-      return state.posts.filter(post => post.columnId === cid)
+    getPostsByCid: (state) => (cid: string) => {
+      return state.posts.filter(post => post.column === cid)
     }
   }
 })

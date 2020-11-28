@@ -61,11 +61,11 @@ export default defineComponent({
         const { columnId } = store.state.user
         if (columnId) {
           const newPost: PostProps = {
-            id: new Date().getTime(),
+            _id: new Date().getTime().toLocaleString(),
             title: titleVal.value,
             content: contentVal.value,
             createdAt: new Date().toLocaleString(),
-            columnId
+            column: columnId
           }
 
           // 提交文章
