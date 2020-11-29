@@ -69,7 +69,7 @@ router.beforeEach((to, from, next) => {
         }
       }).catch(err => {
         console.log(err)
-        storageHandler.remove(storageType, 'token')
+        store.commit('logout')
         next('login')
       })
     } else {
