@@ -5,7 +5,17 @@
       :beforeUpload="beforeUpload"
       @file-uploaded-success="onFileUploadedSuccess"
       @file-uploaded-error="onFileUploadedError"
-    ></uploader>
+    >
+      <h2>点击上传</h2>
+      <template #loading>
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </template>
+      <template #uploaded="dataProps">
+        <img :src="dataProps.uploadedData.data.url" width="500" />
+      </template>
+    </uploader>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
