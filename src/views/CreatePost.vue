@@ -1,7 +1,26 @@
 <template>
   <div class="create-post-page">
     <h4>新建文章</h4>
-    <input type="file" name="file" @change.prevent="handleFileChange">
+    <uploader
+      action="/api/upload"
+      class="d-flex align-items-center justify-content-center bg-light text-secondary w-100 my-4"
+    >
+      <h2>点击上传头图</h2>
+      <template #loading>
+        <div class="d-flex">
+          <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h2>正在上传</h2>
+        </div>
+      </template>
+      <template #uploaded="dataProps">
+        <div class="uploaded-area">
+          <img :src="dataProps.uploadedData.data.url" />
+          <h3>点击重新上传</h3>
+        </div>
+      </template>
+    </uploader>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">文章标题：</label>
@@ -37,13 +56,15 @@ import { GlobalDataProps } from '../store'
 import { PostProps } from '../testData'
 import ValidateInput, { RulesProps } from '../base/ValidateInput.vue'
 import ValidateForm from '../base/ValidateForm.vue'
+import Uploader from '../base/Uploader.vue'
 import axios from '../libs/http'
 
 export default defineComponent({
   name: 'CreatePost',
   components: {
     ValidateInput,
-    ValidateForm
+    ValidateForm,
+    Uploader
   },
   setup () {
     const store = useStore<GlobalDataProps>()
@@ -106,6 +127,29 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
+<style>
+.create-post-page .file-upload-container {
+  height: 200px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.create-post-page .file-upload-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.uploaded-area {
+  position: relative;
+}
+.uploaded-area:hover h3 {
+  display: block;
+}
+.uploaded-area h3 {
+  display: none;
+  position: absolute;
+  color: #999;
+  text-align: center;
+  width: 100%;
+  top: 50%;
+}
 </style>
