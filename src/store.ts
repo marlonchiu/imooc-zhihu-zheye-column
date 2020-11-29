@@ -115,6 +115,9 @@ const store = createStore<GlobalDataProps>({
     },
     register ({ commit }, payload) {
       return postAndCommit('/api/users', 'register', commit, payload)
+    },
+    createPost ({ commit }, payload) {
+      return postAndCommit('/api/posts', 'createPost', commit, payload)
     }
   },
   getters: {

@@ -4,6 +4,8 @@
     <uploader
       action="/api/upload"
       class="d-flex align-items-center justify-content-center bg-light text-secondary w-100 my-4"
+      :beforeUpload="uploadCheck"
+      @file-uploaded-success="onFileUploadedSuccess"
     >
       <h2>点击上传头图</h2>
       <template #loading>
@@ -53,10 +55,12 @@ import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '../store'
-import { PostProps } from '../testData'
+import { PostProps, ResponseType, ImageProps } from '../testData'
 import ValidateInput, { RulesProps } from '../base/ValidateInput.vue'
 import ValidateForm from '../base/ValidateForm.vue'
 import Uploader from '../base/Uploader.vue'
+import createMessage from '../base/createMessage'
+import { beforeUploadCheck } from '../helper'
 import axios from '../libs/http'
 
 export default defineComponent({
@@ -71,6 +75,7 @@ export default defineComponent({
     const router = useRouter()
 
     const titleVal = ref('')
+    let imageId = ''
     const titleRules: RulesProps = [
       { type: 'required', message: '文章标题不能为空' }
     ]
@@ -79,40 +84,47 @@ export default defineComponent({
       { type: 'required', message: '文章详情不能为空' }
     ]
 
+    const onFileUploadedSuccess = (rawData: ResponseType<ImageProps>) => {
+      if (rawData.data._id) {
+        imageId = rawData.data._id
+      }
+    }
+
     const onFormSubmit = (result: boolean) => {
       if (result) {
-        const { column } = store.state.user
+        const { column, _id } = store.state.user
         if (column) {
           const newPost: PostProps = {
-            _id: new Date().getTime().toLocaleString(),
             title: titleVal.value,
             content: contentVal.value,
-            createdAt: new Date().toLocaleString(),
-            column
+            column,
+            author: _id
+          }
+          if (imageId) {
+            newPost.image = imageId
           }
 
           // 提交文章
-          store.commit('createPost', newPost)
-          router.push({ name: 'column', params: { id: column } })
+          store.dispatch('createPost', newPost).then(() => {
+            createMessage('发表成功，2秒后跳转到文章', 'success', 2000)
+            setTimeout(() => {
+              router.push({ name: 'column', params: { id: column } })
+            }, 2000)
+          })
         }
       }
     }
 
-    const handleFileChange = (e: Event) => {
-      const target = e.target as HTMLInputElement
-      const files = target.files
-      if (files) {
-        const uploadedFile = files[0]
-        const formData = new FormData()
-        formData.append(uploadedFile.name, uploadedFile)
-        axios.post('/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then((resp: any) => {
-          console.log(resp)
-        })
+    const uploadCheck = (file: File) => {
+      const result = beforeUploadCheck(file, { format: ['image/jpeg', 'image/png'], size: 1 })
+      const { passed, error } = result
+      if (error === 'format') {
+        createMessage('上传图片只能是 JPG/PNG 格式!', 'error')
       }
+      if (error === 'size') {
+        createMessage('上传图片大小不能超过 1Mb!', 'error')
+      }
+      return passed
     }
 
     return {
@@ -121,7 +133,8 @@ export default defineComponent({
       contentVal,
       contentRules,
       onFormSubmit,
-      handleFileChange
+      uploadCheck,
+      onFileUploadedSuccess
     }
   }
 })
