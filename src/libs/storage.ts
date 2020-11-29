@@ -44,3 +44,6 @@ export class StorageHandler {
     }
   }
 }
+
+// 这里使用 localStorage
+export const storageType = StorageType.Local

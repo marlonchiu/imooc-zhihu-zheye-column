@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted, watch } from 'vue'
+import { defineComponent, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 import { GlobalDataProps } from './store'
@@ -44,16 +44,17 @@ export default defineComponent({
     const store = useStore<GlobalDataProps>()
     const currentUser = computed(() => store.state.user)
     const isLoading = computed(() => store.state.loading)
-    const token = computed(() => store.state.token)
+    // const token = computed(() => store.state.token)
     const error = computed(() => store.state.error)
     // console.log(token.value)
-    onMounted(() => {
-      if (!currentUser.value.isLogin && token.value) {
-        axios.defaults.headers.common.Authorization = `Bearer ${token.value}`
-        store.dispatch('fetchCurrentUser')
-        // router.push('/')
-      }
-    })
+    // 在 router 中处理
+    // onMounted(() => {
+    //   if (!currentUser.value.isLogin && token.value) {
+    //     axios.defaults.headers.common.Authorization = `Bearer ${token.value}`
+    //     store.dispatch('fetchCurrentUser')
+    //     // router.push('/')
+    //   }
+    // })
 
     // watch 可以接收一个 getters
     watch(() => error.value.status, () => {

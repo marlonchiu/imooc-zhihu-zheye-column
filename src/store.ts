@@ -1,9 +1,7 @@
 import { createStore, Commit } from 'vuex'
 import { currentUser, ColumnProps, PostProps, UserProps } from './testData'
 import axios from './libs/http'
-import { StorageType, StorageHandler } from './libs/storage'
-// 使用 localStorage
-const storageType = StorageType.Local
+import { StorageHandler, storageType } from './libs/storage'
 const storageHandler = new StorageHandler()
 
 export interface GlobalErrorProps {
@@ -23,6 +21,7 @@ export interface GlobalDataProps {
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
   commit(mutationName, data)
+  return data
 }
 const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
   const { data } = await axios.post(url, payload)
@@ -81,21 +80,21 @@ const store = createStore<GlobalDataProps>({
     // },
     // 一步封装优化实现
     fetchColumns ({ commit }) {
-      getAndCommit('/api/columns', 'fetchColumns', commit)
+      return getAndCommit('/api/columns', 'fetchColumns', commit)
     },
     // async fetchColumn ({ commit }, cid) {
     //   const { data } = await axios.get(`/api/columns/${cid}`)
     //   commit('fetchColumn', data)
     // },
     fetchColumn ({ commit }, cid) {
-      getAndCommit(`/api/columns/${cid}`, 'fetchColumn', commit)
+      return getAndCommit(`/api/columns/${cid}`, 'fetchColumn', commit)
     },
     // async fetchPosts ({ commit }, cid) {
     //   const { data } = await axios.get(`/api/columns/${cid}/posts`)
     //   commit('fetchPosts', data)
     // }
     fetchPosts ({ commit }, cid) {
-      getAndCommit(`/api/columns/${cid}/posts`, 'fetchPosts', commit)
+      return getAndCommit(`/api/columns/${cid}/posts`, 'fetchPosts', commit)
     },
     login ({ commit }, payload) {
       return postAndCommit('/api/user/login', 'login', commit, payload)
