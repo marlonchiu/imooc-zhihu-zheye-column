@@ -38,6 +38,12 @@ export interface RuleProps {
 
 export type MessageType = 'success' | 'error' | 'default'
 
+export interface ResponseType<P = {}> {
+  code: number;
+  msg: string;
+  data: P;
+}
+
 export const testColumns: ColumnProps[] = [
   {
     _id: '1',

@@ -16,9 +16,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
 import axios from '../libs/http'
 type UploadStatus = 'ready' | 'loading' | 'success' | 'error'
+type CheckFunction = (file: File) => boolean
 
 export default defineComponent({
   name: 'Uploader',
@@ -26,9 +27,13 @@ export default defineComponent({
     action: {
       type: String,
       required: true
+    },
+    beforeUpload: {
+      type: Function as PropType<CheckFunction>
     }
   },
-  setup (props) {
+  emits: ['file-uploaded-success', 'file-uploaded-error'],
+  setup (props, context) {
     const fileInput = ref<null | HTMLInputElement>(null)
     const fileStatus = ref<UploadStatus>('ready')
 
@@ -41,9 +46,16 @@ export default defineComponent({
       const currentTarget = e.target as HTMLInputElement
       const files = currentTarget.files
       if (files) {
-        fileStatus.value = 'loading'
         const uploadedFiles = Array.from(files)
         const uploadedFile = uploadedFiles[0]
+        if (props.beforeUpload) {
+          const result = props.beforeUpload(uploadedFile)
+          if (!result) {
+            return
+          }
+        }
+        fileStatus.value = 'loading'
+
         const formData = new FormData()
         formData.append('file', uploadedFile)
         axios.post(props.action, formData, {
@@ -51,10 +63,11 @@ export default defineComponent({
             'Content-Type': 'multipart/form-data'
           }
         }).then(resp => {
-          console.log(resp.data)
           fileStatus.value = 'success'
-        }).catch(() => {
+          context.emit('file-uploaded-success', resp.data)
+        }).catch(error => {
           fileStatus.value = 'error'
+          context.emit('file-uploaded-error', { error })
         }).finally(() => {
           if (fileInput.value) {
             fileInput.value.value = ''
