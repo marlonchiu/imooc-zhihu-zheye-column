@@ -1,5 +1,13 @@
 module.exports = {
   lintOnSave: false,
+  chainWebpack: config => {
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = '者也专栏 | 慕课网 - Vue3.0 + TS 仿知乎专栏企业级项目'
+        return args
+      })
+  },
   // 服务项配置
   devServer: {
     host: 'localhost',
