@@ -61,7 +61,6 @@ import ValidateForm from '../base/ValidateForm.vue'
 import Uploader from '../base/Uploader.vue'
 import createMessage from '../base/createMessage'
 import { beforeUploadCheck } from '../helper'
-import axios from '../libs/http'
 
 export default defineComponent({
   name: 'CreatePost',

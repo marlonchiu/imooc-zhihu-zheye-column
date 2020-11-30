@@ -56,6 +56,13 @@ const store = createStore<GlobalDataProps>({
       console.log(rawData.data.list)
       state.posts = rawData.data.list
     },
+    fetchPost (state, rawData) {
+      // 更新替换对应post的数据
+      const targetId = rawData.data._id
+      const oldIndex = state.posts.findIndex(c => c._id === targetId)
+      const newPost = rawData.data
+      state.posts.splice(oldIndex, 1, newPost)
+    },
     setLoading (state, status) {
       state.loading = status
     },
@@ -101,6 +108,9 @@ const store = createStore<GlobalDataProps>({
     fetchPosts ({ commit }, cid) {
       return getAndCommit(`/api/columns/${cid}/posts`, 'fetchPosts', commit)
     },
+    fetchPost ({ commit }, id) {
+      return getAndCommit(`/api/posts/${id}`, 'fetchPost', commit)
+    },
     login ({ commit }, payload) {
       return postAndCommit('/api/user/login', 'login', commit, payload)
     },
@@ -126,6 +136,9 @@ const store = createStore<GlobalDataProps>({
     },
     getPostsByCid: (state) => (cid: string) => {
       return state.posts.filter(post => post.column === cid)
+    },
+    getCurrentPost: (state) => (id: string) => {
+      return state.posts.find(c => c._id === id)
     }
   }
 })
