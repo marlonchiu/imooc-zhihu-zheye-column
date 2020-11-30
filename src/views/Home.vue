@@ -1,21 +1,5 @@
 <template>
   <div class="home-page">
-    <uploader
-      action="/api/upload"
-      :beforeUpload="beforeUpload"
-      @file-uploaded-success="onFileUploadedSuccess"
-      @file-uploaded-error="onFileUploadedError"
-    >
-      <h2>点击上传</h2>
-      <template #loading>
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </template>
-      <template #uploaded="dataProps">
-        <img :src="dataProps.uploadedData.data.url" width="500" />
-      </template>
-    </uploader>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
@@ -36,16 +20,12 @@
 import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '../store'
-import { ResponseType, ImageProps } from '../testData'
 import ColumnList from '../components/ColumnList.vue'
-import Uploader from '../base/Uploader.vue'
-import createMessage from '../base/createMessage'
 
 export default defineComponent({
   name: 'Home',
   components: {
-    ColumnList,
-    Uploader
+    ColumnList
   },
   setup () {
     const store = useStore<GlobalDataProps>()
@@ -53,27 +33,9 @@ export default defineComponent({
       store.dispatch('fetchColumns')
     })
     const list = computed(() => store.state.columns)
-    const beforeUpload = (file: File) => {
-      const isJPG = file.type === 'image/jpeg'
-      if (!isJPG) {
-        createMessage('上传图片只能是 JPG 格式!', 'error')
-      }
-      return isJPG
-    }
-
-    const onFileUploadedSuccess = (rawData: ResponseType<ImageProps>) => {
-      createMessage(`上传图片的ID ${rawData.data._id}`, 'success')
-    }
-
-    const onFileUploadedError = () => {
-      createMessage('上传图片失败，请重新上传', 'error')
-    }
 
     return {
-      list,
-      beforeUpload,
-      onFileUploadedSuccess,
-      onFileUploadedError
+      list
     }
   }
 })
