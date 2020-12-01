@@ -28,7 +28,7 @@ export interface PostProps {
   content?: string;
   image?: ImageProps | string;
   column: string;
-  author?: string;
+  author?: string | UserProps;
   createdAt?: string;
   isHTML?: boolean;
 }
