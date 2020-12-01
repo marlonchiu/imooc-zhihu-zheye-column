@@ -29,7 +29,7 @@ import GlobalHeader from './components/GlobalHeader.vue'
 import Loader from './base/Loader.vue'
 // import Message from './base/Message.vue'
 import createMessage from './base/createMessage'
-import axios from './libs/http'
+// import { axios } from './libs/http'
 // import { currentUser } from './testData'
 
 export default defineComponent({

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import store from '../store'
 
 // 这里采用代理实现完成
@@ -32,4 +32,4 @@ axios.interceptors.response.use(resp => {
 //   console.log(res)
 // })
 
-export default axios
+export { axios, AxiosRequestConfig }

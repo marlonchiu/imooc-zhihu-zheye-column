@@ -6,7 +6,7 @@ import ColumnDetail from './views/ColumnDetail.vue'
 import CreatePost from './views/CreatePost.vue'
 import PostDetail from './views/PostDetail.vue'
 import store from './store'
-import axios from './libs/http'
+import { axios } from './libs/http'
 
 const routerHistory = createWebHistory()
 const router = createRouter({

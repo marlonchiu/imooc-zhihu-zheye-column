@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType, watch } from 'vue'
-import axios from '../libs/http'
+import { axios } from '../libs/http'
 type UploadStatus = 'ready' | 'loading' | 'success' | 'error'
 type CheckFunction = (file: File) => boolean
 
