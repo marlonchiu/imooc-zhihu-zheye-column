@@ -68,6 +68,9 @@ const store = createStore<GlobalDataProps>({
         }
       })
     },
+    deletePost (state, { data }) {
+      state.posts = state.posts.filter(post => post._id !== data._id)
+    },
     setLoading (state, status) {
       state.loading = status
     },
@@ -139,6 +142,11 @@ const store = createStore<GlobalDataProps>({
       return asyncAndCommit(`/api/posts/${id}`, 'updatePost', commit, {
         method: 'patch',
         data: payload
+      })
+    },
+    deletePost ({ commit }, id) {
+      return asyncAndCommit(`/api/posts/${id}`, 'deletePost', commit, {
+        method: 'delete'
       })
     }
   },

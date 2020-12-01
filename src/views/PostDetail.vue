@@ -32,13 +32,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import MarkdownIt from 'markdown-it'
 import { GlobalDataProps } from '../store'
-import { PostProps, ImageProps, UserProps } from '../testData'
+import { PostProps, ImageProps, UserProps, ResponseType } from '../testData'
 import UserProfile from '../components/UserProfile.vue'
 import Modal from '../base/Modal.vue'
+import createMessage from '../base/createMessage'
 
 export default defineComponent({
   name: 'PostDetail',
@@ -48,6 +49,7 @@ export default defineComponent({
   },
   setup () {
     const store = useStore<GlobalDataProps>()
+    const router = useRouter()
     const route = useRoute()
     const currentId = route.params.id
     const md = new MarkdownIt()
@@ -74,7 +76,7 @@ export default defineComponent({
         return false
       }
     })
-    console.log(showEditArea.value)
+
     const currentImageUrl = computed(() => {
       if (currentPost.value && currentPost.value.image) {
         const { image } = currentPost.value
@@ -83,14 +85,15 @@ export default defineComponent({
         return null
       }
     })
+
     const hideAndDelete = () => {
       modalIsVisible.value = false
-      // store.dispatch('deletePost', currentId).then((rawData: ResponseType<PostProps>) => {
-      //   createMessage('删除成功，2秒后跳转到专栏首页', 'success', 2000)
-      //   setTimeout(() => {
-      //     router.push(`/column/${store.state.user.column}`)
-      //   }, 2000)
-      // })
+      store.dispatch('deletePost', currentId).then((rawData: ResponseType<PostProps>) => {
+        createMessage('删除成功，2秒后跳转到专栏首页', 'success', 2000)
+        setTimeout(() => {
+          router.push(`/column/${store.state.user.column}`)
+        }, 2000)
+      })
     }
 
     return {
