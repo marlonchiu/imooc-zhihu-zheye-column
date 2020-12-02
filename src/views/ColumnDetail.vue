@@ -17,8 +17,7 @@
 import { defineComponent, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '../store'
-import { ColumnProps, PostProps } from '../testData'
+import { GlobalDataProps, ColumnProps, PostProps } from '../declareData'
 import PostList from '../components/PostList.vue'
 import { generateFitUrl } from '../helper'
 

@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from './store'
+import { GlobalDataProps } from './declareData'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader from './components/GlobalHeader.vue'
 import Loader from './base/Loader.vue'

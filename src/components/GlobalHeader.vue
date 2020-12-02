@@ -32,7 +32,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import Dropdown from '../base/Dropdown.vue'
 import DropdownItem from '../base/DropdownItem.vue'
-import { UserProps } from '../testData'
+import { UserProps } from '../declareData'
 
 export default defineComponent({
   name: 'GlobalHeader',

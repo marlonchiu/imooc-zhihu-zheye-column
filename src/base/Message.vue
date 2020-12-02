@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
-import { MessageType } from '../testData'
+import { MessageType } from '../declareData'
 import useDOMCreate from '../hooks/useDOMCreate'
 
 export default defineComponent({

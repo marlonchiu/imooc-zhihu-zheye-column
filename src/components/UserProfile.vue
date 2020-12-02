@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { UserProps } from '../testData'
+import { UserProps } from '../declareData'
 
 export default defineComponent({
   name: 'UserProfile',

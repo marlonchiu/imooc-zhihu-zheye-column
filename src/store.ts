@@ -1,32 +1,9 @@
 import { createStore, Commit } from 'vuex'
-import { currentUser, ColumnProps, PostProps, UserProps } from './testData'
+import { GlobalDataProps, GlobalErrorProps } from './declareData'
 import { axios, AxiosRequestConfig } from './libs/http'
 import { StorageHandler, storageType } from './libs/storage'
 import { arrToObj, objToArr } from './helper'
 const storageHandler = new StorageHandler()
-
-export interface GlobalErrorProps {
-  status: boolean;
-  message?: string;
-}
-
-export interface GlobalDataProps {
-  token: string;
-  error: GlobalErrorProps;
-  loading: boolean;
-  columns: {
-    data: ListProps<ColumnProps>;
-    isLoaded: boolean;
-  };
-  posts: {
-    data: ListProps<PostProps>;
-    loadedColumns: Array<string>;
-  };
-  user: UserProps;
-}
-interface ListProps<P> {
-  [id: string]: P;
-}
 
 const asyncAndCommit = async (url: string, mutationName: string, commit: Commit,
   config: AxiosRequestConfig = { method: 'get' }, extraData?: any) => {
@@ -38,6 +15,7 @@ const asyncAndCommit = async (url: string, mutationName: string, commit: Commit,
   }
   return data
 }
+
 const store = createStore<GlobalDataProps>({
   state: {
     error: { status: false },
@@ -45,15 +23,12 @@ const store = createStore<GlobalDataProps>({
     loading: false,
     columns: { data: {}, isLoaded: false },
     posts: { data: {}, loadedColumns: [] },
-    user: currentUser
+    user: { isLogin: false }
   },
   mutations: {
     // login (state) {
     //   state.user = { ...state.user, isLogin: true, name: 'marlon' }
     // },
-    createPost (state, newPost) {
-      state.posts.data[newPost._id] = newPost
-    },
     fetchColumns (state, rawData) {
       state.columns.data = arrToObj(rawData.data.list)
       state.columns.isLoaded = true
@@ -68,6 +43,9 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPost (state, rawData) {
       state.posts.data[rawData.data._id] = rawData.data
+    },
+    createPost (state, newPost) {
+      state.posts.data[newPost._id] = newPost
     },
     updatePost (state, { data }) {
       state.posts.data[data._id] = data
@@ -128,6 +106,20 @@ const store = createStore<GlobalDataProps>({
         return Promise.resolve({ data: currentPost })
       }
     },
+    createPost ({ commit }, payload) {
+      return asyncAndCommit('/api/posts', 'createPost', commit, { method: 'post', data: payload })
+    },
+    updatePost ({ commit }, { id, payload }) {
+      return asyncAndCommit(`/api/posts/${id}`, 'updatePost', commit, {
+        method: 'patch',
+        data: payload
+      })
+    },
+    deletePost ({ commit }, id) {
+      return asyncAndCommit(`/api/posts/${id}`, 'deletePost', commit, {
+        method: 'delete'
+      })
+    },
     login ({ commit }, payload) {
       return asyncAndCommit('/api/user/login', 'login', commit, { method: 'post', data: payload })
     },
@@ -142,20 +134,6 @@ const store = createStore<GlobalDataProps>({
     },
     register ({ commit }, payload) {
       return asyncAndCommit('/api/users', 'register', commit, { method: 'post', data: payload })
-    },
-    createPost ({ commit }, payload) {
-      return asyncAndCommit('/api/posts', 'createPost', commit, { method: 'post', data: payload })
-    },
-    updatePost ({ commit }, { id, payload }) {
-      return asyncAndCommit(`/api/posts/${id}`, 'updatePost', commit, {
-        method: 'patch',
-        data: payload
-      })
-    },
-    deletePost ({ commit }, id) {
-      return asyncAndCommit(`/api/posts/${id}`, 'deletePost', commit, {
-        method: 'delete'
-      })
     }
   },
   getters: {
