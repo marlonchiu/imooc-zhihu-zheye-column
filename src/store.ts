@@ -120,8 +120,12 @@ const store = createStore<GlobalDataProps>({
       }
     },
     fetchPost ({ state, commit }, id) {
-      if (!state.posts.data[id]) {
+      const currentPost = state.posts.data[id]
+      // 没有获取过 或者 没有详细内容的话要发送请求
+      if (!currentPost || !currentPost.content) {
         return asyncAndCommit(`/api/posts/${id}`, 'fetchPost', commit)
+      } else {
+        return Promise.resolve({ data: currentPost })
       }
     },
     login ({ commit }, payload) {
