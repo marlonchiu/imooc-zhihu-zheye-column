@@ -63,6 +63,7 @@ export interface GlobalDataProps {
   columns: {
     data: ListProps<ColumnProps>;
     isLoaded: boolean;
+    total: number;
   };
   posts: {
     data: ListProps<PostProps>;

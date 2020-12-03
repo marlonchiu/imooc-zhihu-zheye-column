@@ -14,7 +14,7 @@ const useLoadMore = (actionName: string, total: ComputedRef<number>, params: Loa
     pageSize: pageSize
   }))
   const loadMorePage = () => {
-    store.dispatch(actionName, requestParams.value ).then(() => {
+    store.dispatch(actionName, requestParams.value).then(() => {
       currentPage.value++
     })
   }
