@@ -21,7 +21,7 @@ const store = createStore<GlobalDataProps>({
     error: { status: false },
     token: storageHandler.getItem(storageType, 'token') || '',
     loading: false,
-    columns: { data: {}, isLoaded: false, total: 0 },
+    columns: { data: {}, currentPage: 0, total: 0 },
     posts: { data: {}, loadedColumns: [] },
     user: { isLogin: false }
   },
@@ -31,14 +31,12 @@ const store = createStore<GlobalDataProps>({
     // },
     fetchColumns (state, rawData) {
       const { data } = state.columns
-      const { list, count } = rawData.data
+      const { list, count, currentPage } = rawData.data
       state.columns = {
         data: { ...data, ...arrToObj(list) },
         total: count,
-        isLoaded: true
+        currentPage: currentPage * 1
       }
-      // state.columns.data = arrToObj(rawData.data.list)
-      // state.columns.isLoaded = true
     },
     fetchColumn (state, rawData) {
       state.columns.data[rawData.data._id] = rawData.data
@@ -91,10 +89,9 @@ const store = createStore<GlobalDataProps>({
     // 一步封装优化实现
     fetchColumns ({ state, commit }, params = {}) {
       const { currentPage = 1, pageSize = 6 } = params
-      // if (!state.columns.isLoaded) {
-      //   return asyncAndCommit('/api/columns', 'fetchColumns', commit)
-      // }
-      return asyncAndCommit(`/api/columns?currentPage=${currentPage}&pageSize=${pageSize}`, 'fetchColumns', commit)
+      if (state.columns.currentPage < currentPage) {
+        return asyncAndCommit(`/api/columns?currentPage=${currentPage}&pageSize=${pageSize}`, 'fetchColumns', commit)
+      }
     },
     fetchColumn ({ state, commit }, cid) {
       if (!state.columns.data[cid]) {
