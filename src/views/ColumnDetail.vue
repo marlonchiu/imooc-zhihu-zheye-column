@@ -22,10 +22,11 @@
 import { defineComponent, computed, onMounted, watch, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { GlobalDataProps, ColumnProps, PostProps } from '../declareData'
+import { GlobalDataProps, ColumnProps } from '../declareData'
 import PostList from '../components/PostList.vue'
-import { generateFitUrl } from '../helper'
+import { addColumnAvatar } from '../helper'
 import useLoadMore from '../hooks/useLoadMore'
+
 type ColumnIdProps = string | undefined;
 
 export default defineComponent({
@@ -36,7 +37,7 @@ export default defineComponent({
   setup () {
     const store = useStore<GlobalDataProps>()
     const route = useRoute()
-    const currentId = route.params.id
+    const currentId = route.params.id as ColumnIdProps
 
     const loaded = reactive({
       currentPage: 0,
@@ -56,15 +57,15 @@ export default defineComponent({
     })
 
     const column = computed(() => {
-      const selectColumn = store.getters.getColumnById(currentId) as ColumnProps
+      const selectColumn = store.getters.getColumnById(currentId) as ColumnProps | undefined
       if (selectColumn) {
-        generateFitUrl(selectColumn, 100, 100)
+        addColumnAvatar(selectColumn, 100, 100)
       }
       return selectColumn
     })
 
     const params = {
-      columnId: String(currentId),
+      columnId: currentId,
       pageSize: 3,
       currentPage: loaded.currentPage ? loaded.currentPage + 1 : 2
     }
@@ -73,20 +74,7 @@ export default defineComponent({
       total,
       params
     )
-    const postList = computed(() => {
-      const list = store.getters.getPostsByCid(currentId) as PostProps[]
-      // list.map(item => {
-      //   if (item.image && item.image.url) {
-      //     item.image.url = item.image.url + '?x-oss-process=image/resize,m_pad,h_100,w_100'
-      //   } else {
-      //     item.image = {
-      //       url: require('@/assets/column.jpg')
-      //     }
-      //   }
-      //   return item
-      // })
-      return list
-    })
+    const postList = computed(() => store.getters.getPostsByCid(currentId))
 
     return {
       column,

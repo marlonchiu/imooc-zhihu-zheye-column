@@ -13,6 +13,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import { UserProps } from '../declareData'
+import { addColumnAvatar } from '../helper'
 
 export default defineComponent({
   name: 'UserProfile',
@@ -24,13 +25,9 @@ export default defineComponent({
   },
   setup (props) {
     const fitUrl = computed(() => {
-      let url = ''
-      if (props.user.avatar && props.user.avatar.url) {
-        url = props.user.avatar.url
-      } else {
-        url = require('@/assets/avatar.jpg')
-      }
-      return url
+      addColumnAvatar(props.user, 50, 50)
+      const { avatar } = props.user
+      return avatar && avatar.fitUrl
     })
     return {
       fitUrl
