@@ -34,7 +34,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import Dropdown from '../base/Dropdown.vue'
 import DropdownItem from '../base/DropdownItem.vue'
-import { UserProps, GlobalDataProps } from '../declareData'
+import { UserProps, GlobalDataProps } from '../store/types'
 
 export default defineComponent({
   name: 'GlobalHeader',

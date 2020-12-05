@@ -1,8 +1,8 @@
 import { createStore, Commit } from 'vuex'
-import { GlobalDataProps, GlobalErrorProps } from './declareData'
-import { axios, AxiosRequestConfig } from './libs/http'
-import { StorageHandler, storageType } from './libs/storage'
-import { arrToObj, objToArr } from './helper'
+import { GlobalDataProps, GlobalErrorProps } from './types'
+import { axios, AxiosRequestConfig } from '../libs/http'
+import { StorageHandler, storageType } from '../libs/storage'
+import { arrToObj, objToArr } from '../libs/helper'
 const storageHandler = new StorageHandler()
 
 const asyncAndCommit = async (url: string, mutationName: string, commit: Commit,

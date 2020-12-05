@@ -22,9 +22,9 @@
 import { defineComponent, computed, onMounted, watch, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { GlobalDataProps, ColumnProps } from '../declareData'
+import { GlobalDataProps, ColumnProps } from '../store/types'
 import PostList from '../components/PostList.vue'
-import { addColumnAvatar } from '../helper'
+import { addColumnAvatar } from '../libs/helper'
 import useLoadMore from '../hooks/useLoadMore'
 
 type ColumnIdProps = string | undefined;

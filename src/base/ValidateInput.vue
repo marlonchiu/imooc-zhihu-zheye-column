@@ -23,7 +23,7 @@
 <script lang="ts">
 import { defineComponent, reactive, PropType, onMounted, computed } from 'vue'
 import { emitter } from './ValidateForm.vue'
-import { RuleProps } from '../declareData'
+import { RuleProps } from '../store/types'
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 export type RulesProps = RuleProps[]

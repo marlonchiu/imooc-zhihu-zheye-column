@@ -1,4 +1,4 @@
-import { ColumnProps, ImageProps, UserProps } from './declareData'
+import { ColumnProps, ImageProps, UserProps } from '../store/types'
 
 export function generateFitUrl (data: ImageProps, width: number, height: number, format = ['m_pad']) {
   if (data && data.url) {

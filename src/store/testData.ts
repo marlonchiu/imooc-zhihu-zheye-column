@@ -1,4 +1,4 @@
-import { ColumnProps, PostProps, UserProps } from './declareData'
+import { ColumnProps, PostProps, UserProps } from './types'
 
 export const testColumns: ColumnProps[] = [
   {
