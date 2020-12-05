@@ -16,6 +16,9 @@ import mitt, { Emitter } from 'mitt'
 // export const emitter = mitt()
 export const emitter: Emitter = mitt()
 type ValidateFunc = () => boolean
+// interface ValidateFunc{
+//   (): boolean;
+// }
 
 export default defineComponent({
   name: 'ValidateForm',

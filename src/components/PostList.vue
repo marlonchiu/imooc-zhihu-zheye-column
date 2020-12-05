@@ -46,6 +46,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.rounded-lg {
+  border-radius: 0.3rem !important;
+}
 .post-list h4 a {
   text-decoration: none;
   color:#1a1a1a;

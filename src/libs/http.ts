@@ -14,9 +14,7 @@ axios.interceptors.request.use(config => {
 
 // interceptors 响应的拦截器
 axios.interceptors.response.use(resp => {
-  setTimeout(() => {
-    store.commit('setLoading', false)
-  }, 1000)
+  store.commit('setLoading', false)
   return resp
 }, e => {
   const { error } = e.response.data

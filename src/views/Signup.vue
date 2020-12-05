@@ -37,6 +37,9 @@
           :rules="repeatPasswordRules"
           v-model="formData.repeatPassword"
         ></validate-input>
+        <div class="form-text">
+          <a href="/login" class="">已经有账户了？去登录</a>
+        </div>
       </div>
       <template v-slot:submit>
         <button type="submit" class="btn btn-primary btn-block btn-large">注册新用户</button>

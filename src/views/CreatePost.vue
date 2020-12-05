@@ -1,5 +1,5 @@
 <template>
-  <div class="create-post-page">
+  <div class="create-post-page container">
     <h4>{{ isEditMode ? "编辑文章" : "新建文章" }}</h4>
     <uploader
       action="/api/upload"

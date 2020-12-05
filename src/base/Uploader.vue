@@ -93,6 +93,7 @@ export default defineComponent({
         })
       }
     }
+
     return {
       fileInput,
       triggerUpload,

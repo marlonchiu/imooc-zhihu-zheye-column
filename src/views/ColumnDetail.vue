@@ -1,5 +1,5 @@
 <template>
-  <div class="column-detail-page w-75 mx-auto">
+  <div class="column-detail-page w-690">
     <div class="column-info row mb-4 border-bottom pb-4 align-items-center" v-if="column">
       <div class="col-3 text-center">
         <img :src="column.avatar && column.avatar.fitUrl" :alt="column.title" class="rounded-circle border w-100">
@@ -87,6 +87,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.w-690 {
+  width: 690px;
+  margin: 0 auto;
+}
 .load-more {
   margin-left: 50% !important;
   transform: translate3d(-50%, 0, 0);

@@ -29,8 +29,8 @@ export default defineComponent({
 
     const dropdownRef = ref<null | HTMLElement>(null)
 
-    // 点击事件
     const { isClickOutside } = useClickOutside(dropdownRef)
+
     watch(isClickOutside, () => {
       if (isOpen.value && isClickOutside.value) {
         isOpen.value = false

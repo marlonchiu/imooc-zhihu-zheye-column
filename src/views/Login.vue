@@ -18,6 +18,9 @@
           :rules="passwordRules"
           v-model="passwordVal"
         ></validate-input>
+        <div class="form-text">
+          <a href="/signup" class="">还没有账户？去注册一个新的吧！</a>
+        </div>
       </div>
       <template v-slot:submit>
         <button type="submit" class="btn btn-primary btn-block btn-large w-100">登录</button>

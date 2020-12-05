@@ -1,6 +1,13 @@
 <template>
-  <div class="post-detail-page">
-    <article class="w-75 mx-auto mb-5 pb-3" v-if="currentPost">
+  <div v-if="currentPost" class="post-detail-page w-690">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">首页</a></li>
+        <li class="breadcrumb-item"><a :href="`/column/${currentPost.column}`">专栏首页</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ currentPost.title }}</li>
+      </ol>
+    </nav>
+    <article class="mb-5 pb-3">
       <img :src="currentImageUrl" alt="currentPost.title" class="rounded-lg img-fluid my-4" v-if="currentImageUrl">
       <h2 class="mb-4">{{ currentPost.title }}</h2>
       <div class="user-profile-component border-top border-bottom py-3 mb-5 align-items-center row g-0">
@@ -20,6 +27,7 @@
       </div>
     </article>
     <modal
+      v-if="modalIsVisible"
       title="删除文章"
       :visible="modalIsVisible"
       @modal-on-close="modalIsVisible = false"
@@ -108,5 +116,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.w-690 {
+  width: 690px;
+  margin: 0 auto;
+}
+.rounded-lg {
+  border-radius: .3rem!important;
+}
+.font-italic {
+  font-style: italic!important;
+}
 </style>
