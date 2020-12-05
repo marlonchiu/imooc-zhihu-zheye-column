@@ -55,6 +55,11 @@ export interface GlobalErrorProps {
 interface ListProps<P> {
   [id: string]: P;
 }
+export interface LoadedPostProps {
+  columnId?: string;
+  currentPage?: number;
+  total?: number;
+}
 
 export interface GlobalDataProps {
   token: string;
@@ -67,7 +72,7 @@ export interface GlobalDataProps {
   };
   posts: {
     data: ListProps<PostProps>;
-    loadedColumns: Array<string>;
+    loadedColumns: ListProps<LoadedPostProps>;
   };
   user: UserProps;
 }

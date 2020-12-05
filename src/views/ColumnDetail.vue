@@ -10,16 +10,23 @@
       </div>
     </div>
     <post-list :list="postList"></post-list>
+    <button
+      v-if="!isLastPage"
+      @click="loadMorePage"
+      class="btn btn-outline-primary mt-2 mb-5 mx-auto btn-block w-25 load-more"
+    >加载更多</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted } from 'vue'
+import { defineComponent, computed, onMounted, watch, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps, ColumnProps, PostProps } from '../declareData'
 import PostList from '../components/PostList.vue'
 import { generateFitUrl } from '../helper'
+import useLoadMore from '../hooks/useLoadMore'
+type ColumnIdProps = string | undefined;
 
 export default defineComponent({
   name: 'ColumnDetail',
@@ -27,14 +34,27 @@ export default defineComponent({
     PostList
   },
   setup () {
-    const route = useRoute()
     const store = useStore<GlobalDataProps>()
-
+    const route = useRoute()
     const currentId = route.params.id
+
+    const loaded = reactive({
+      currentPage: 0,
+      total: 0
+    })
+    const total = computed(() => loaded.total)
+    watch(store.state.posts.loadedColumns, () => {
+      console.log(store.state.posts.loadedColumns)
+      const { currentPage, total } = store.getters.getLoadedPost(currentId)
+      loaded.currentPage = currentPage
+      loaded.total = total
+    })
+
     onMounted(() => {
       store.dispatch('fetchColumn', currentId)
-      store.dispatch('fetchPosts', currentId)
+      store.dispatch('fetchPosts', { columnId: currentId, pageSize: 3 })
     })
+
     const column = computed(() => {
       const selectColumn = store.getters.getColumnById(currentId) as ColumnProps
       if (selectColumn) {
@@ -42,6 +62,17 @@ export default defineComponent({
       }
       return selectColumn
     })
+
+    const params = {
+      columnId: String(currentId),
+      pageSize: 3,
+      currentPage: loaded.currentPage ? loaded.currentPage + 1 : 2
+    }
+    const { loadMorePage, isLastPage } = useLoadMore(
+      'fetchPosts',
+      total,
+      params
+    )
     const postList = computed(() => {
       const list = store.getters.getPostsByCid(currentId) as PostProps[]
       // list.map(item => {
@@ -59,12 +90,17 @@ export default defineComponent({
 
     return {
       column,
-      postList
+      postList,
+      loadMorePage,
+      isLastPage
     }
   }
 })
 </script>
 
 <style scoped>
-
+.load-more {
+  margin-left: 50% !important;
+  transform: translate3d(-50%, 0, 0);
+}
 </style>
