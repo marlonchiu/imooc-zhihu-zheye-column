@@ -11,7 +11,7 @@
 ### 安装依赖
 
 ```bash
-npm install / yarn
+npm install
 ```
 
 ### 运行本地开发环境
